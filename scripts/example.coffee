@@ -1,6 +1,8 @@
 # Description:
 #   Example scripts for you to examine and try out.
 #
+# Commands:
+#   hubot what is your name - reponds what is your name
 # Notes:
 #   They are commented out by default, because most of them are pretty silly and
 #   wouldn't be useful and amusing enough for day to day huboting.
@@ -12,14 +14,14 @@ randomWord = require 'random-word'
 
 module.exports = (robot) ->
 
-  robot.hear /badger/i, (res) ->
+  robot.respond /badger/i, (res) ->
     res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
 
-  robot.hear /hi|hello|hey/i, (res) ->
+  robot.respond /hi|hello|hey/i, (res) ->
    res.reply 'Greetings friend ' + randomWord()
 
   robot.respond /what is your name/i , (res) ->
-    res.reply 'Phineas'
+    res.reply 'My name is Phineas'
 
 
   # robot.hear /badger/i, (res) ->
