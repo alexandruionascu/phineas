@@ -16,4 +16,4 @@
 
 module.exports = (robot) ->
   robot.hear /am bani/i, (res) ->
-    res.send "am bani de ma enerveaza :D :) ;)"
+    res.send "am bani de ma enerveaza :dollar: :dollar: :dollar:"
