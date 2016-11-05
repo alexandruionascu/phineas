@@ -20,6 +20,11 @@ module.exports = (robot) ->
 
   robot.respond /what is your name/i , (res) ->
     res.reply 'My name is John Snow'
+
+
+  # robot.hear /badger/i, (res) ->
+  #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
+
   #
   # robot.respond /open the (.*) doors/i, (res) ->
   #   doorType = res.match[1]
