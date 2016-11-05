@@ -1,4 +1,5 @@
 var stripe = require('stripe')('sk_test_ar94SyA9caWaloZxvJ3L2SJ1');
+var Quiche = require('quiche');
 
 var TransactionList = function(transactions) {
   this.transactions = transactions;
@@ -184,6 +185,41 @@ var TransactionList = function(transactions) {
             balance += spendings[i].amount;
 
           message.reply("Your current balance is " + balance + "$");
+      });
+    });
+
+    robot.respond(/show weekly chart/i, function(message) {
+      getAllIncomes(function(incomes) {
+        var incomeData = [];
+        for(var i = 0; i < incomes.length; i++)
+          incomeData.push(incomes[i].amount);
+
+        var spendingData = [];
+        var spendings = robot.brain.get('transactions');
+          if(!spendings)
+            spendings = new TransactionList([]);
+          spendings = spendings.getSpendings();
+
+          for(var i = 0; i < spendings.length; i++)
+            spendingData.push(-1 * spendings[i].amount);
+          message.reply(incomeData.length + " - " + spendingData.length);
+          var bar = new Quiche('bar');
+          bar.setWidth(400);
+          bar.setHeight(265);
+          bar.setTitle('Your balance history');
+          bar.setBarStacked(); // Stacked chart
+          bar.setBarWidth(0);
+          bar.setBarSpacing(6); // 6 pixles between bars/groups
+          bar.setLegendBottom(); // Put legend at bottom
+          bar.setTransparentBackground(); // Make background transparent
+          bar.addData(incomeData, 'Income', 'FF0000');
+          bar.addData(spendingData, 'Spending', '0000FF');
+
+          bar.setAutoScaling(); // Auto scale y axis
+          bar.addAxisLabels('x', ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+
+          var imageUrl = bar.getUrl(true);
+          message.reply(imageUrl);
       });
     });
 
