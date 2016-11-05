@@ -43,7 +43,7 @@ module.exports = Transaction, TransactionList;
 
 
 module.exports = function(robot) {
-
+  //------------------------- SPENDINGS --------------------------
   robot.respond(/spend (.*) on (.*)/i, function(message) {
     var amount = -1 * parseInt(message.match[1]);
     var spending = new Transaction(amount, message.match[2]);
@@ -77,6 +77,41 @@ module.exports = function(robot) {
       } else {
         for(var i = 0; i < spendingList.length; i++)
           message.reply(spendingList[i].toString());
+      }
+    }
+  });
+
+  //----------------------------- INCOME --------------------------
+  robot.respond(/add (.*) from (.*)/i, function(message) {
+    var amount = parseInt(message.match[1]);
+    var income = new Transaction(amount, message.match[2]);
+
+    message.reply("I just recorded a new income: " + income.toString());
+
+    var transactionList = robot.brain.get('transactions');
+
+    if (transactionList == null) {
+      var array = [];
+      array.push(income);
+      transactionList = new TransactionList(array);
+    } else {
+      transactionList.addTransaction(amount, message.match[2]);
+    }
+    robot.brain.set('transactions', transactionList);
+  });
+
+  robot.respond(/list incomes/i, function(message) {
+    var incomeList = robot.brain.get('transactions');
+
+    if (!incomeList) {
+      message.reply("Oh, you didn't received anything! Too bad :sad: ");
+    } else {
+      incomeList = incomeList.getIncomes();
+      if (incomeList.length == 0) {
+        message.reply("Oh, you didn't received anything! Too bad :sad: ")
+      } else {
+        for(var i = 0; i < incomeList.length; i++)
+          message.reply(incomeList[i].toString());
       }
     }
   });
