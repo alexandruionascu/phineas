@@ -8,25 +8,6 @@ function TransactionWithTime(amount, description, created) {
 }
 
 
-function StripeTransactions() {
-  //this.stripeTransactions = [];
-  this.history = [];
-
-  this.getStripeTransactions = function() {
-    stripe.balance.listTransactions(function(err, transactions) {
-      for (var i = 0; i < transactions.data.length; i++) {
-        this.history.push(new TransactionWithTime(
-          parseInt(transactions.data[i].amount),
-          transactions.data[i].description,
-          transactions.data[i].created)
-        );
-      }
-    });
-
-    return this.history;
-  }
-};
-
 module.exports = {
   TransactionList: function(robot) {
     robot.hear(/show history/i, function(message) {
@@ -66,14 +47,3 @@ module.exports = {
     });
 }
 };
-
-/*
-
-module.exports = (robot) ->
-  robot.hear /stripe charge/i, (res) ->
-    res.send "charged"
-
-  robot.hear /stripe balance/i, (res) ->
-    stripe.balance.listTransactions { limit: 3 }, (transactions) ->
-      console.log transactions
-*/
