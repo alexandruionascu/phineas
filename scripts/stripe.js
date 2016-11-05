@@ -20,7 +20,7 @@ module.exports = function(robot) {
     robot.respond(/what is my account id/i, function(message) {
       stripe.accounts.retrieve(
         function(err, account) {
-          console.log(account.id);
+          message.reply(account.id);
         });
       });
 
