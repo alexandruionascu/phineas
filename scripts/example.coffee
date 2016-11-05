@@ -8,15 +8,17 @@
 #
 #   These are from the scripting documentation: https://github.com/github/hubot/blob/master/docs/scripting.md
 
+randomWord = require 'random-word'
+
 module.exports = (robot) ->
 
   robot.hear /badger/i, (res) ->
     res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
 
   robot.hear /hi|hello|hey/i, (res) ->
-    res.reply 'Greetings friend'
+   res.reply 'Greetings friend ' + randomWord()
 
-  robot.respond /what is your name/i, (res) ->
+  robot.respond /what is your name/i , (res) ->
     res.reply 'My name is John Snow'
   #
   # robot.respond /open the (.*) doors/i, (res) ->
