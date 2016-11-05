@@ -19,7 +19,7 @@ module.exports = (robot) ->
    res.reply 'Greetings friend ' + randomWord()
 
   robot.respond /what is your name/i , (res) ->
-    res.reply 'My name is John Snow'
+    res.reply 'Phineas'
 
 
   # robot.hear /badger/i, (res) ->
