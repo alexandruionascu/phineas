@@ -17,6 +17,13 @@ module.exports = function(robot) {
 
     });
 
+    robot.respond(/what is my account id/i, function(message) {
+      stripe.accounts.retrieve(
+        function(err, account) {
+          console.log(account.id);
+        });
+      });
+
     robot.hear(/show customers/i, function(message) {
       stripe.customers.list(function(err, customers) {
         message.reply(JSON.stringify(customers));
