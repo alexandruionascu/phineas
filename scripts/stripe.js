@@ -1,6 +1,7 @@
 var stripe = require('stripe')('sk_test_ar94SyA9caWaloZxvJ3L2SJ1');
 
-module.exports = function(robot) {
+module.exports = {
+  TransactionList: function(robot) {
     robot.hear(/show history/i, function(message) {
       message.reply("Your transactions are loading...")
       stripe.balance.listTransactions(function(err, transactions) {
@@ -30,6 +31,7 @@ module.exports = function(robot) {
       });
     });
 }
+};
 
 /*
 

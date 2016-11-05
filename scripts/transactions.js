@@ -1,4 +1,4 @@
-function TransactionList(transactions) {
+var TransactionList = function(transactions) {
   this.transactions = transactions;
   this.count = function() {
     return this.transactions.length;
@@ -28,8 +28,9 @@ function TransactionList(transactions) {
     return returnValue;
   }
 };
+exports.transactionList = transactionList;
 
-function Transaction(amount, description) {
+module.exports = function Transaction(amount, description) {
   this.amount = amount;
   this.description = description;
   this.time = Date.now();
@@ -38,8 +39,6 @@ function Transaction(amount, description) {
     return this.description + ' ' + this.amount + '  $ at time ' + this.time;
   }
 };
-
-module.exports = Transaction, TransactionList;
 
 
 module.exports = function(robot) {
