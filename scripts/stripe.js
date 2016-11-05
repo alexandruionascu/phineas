@@ -16,6 +16,12 @@ module.exports = function(robot) {
       });
 
     });
+
+    robot.hear(/show customers/i, function(message) {
+      stripe.customers.list(function(err, customers) {
+        message.reply(JSON.stringify(customers));
+      });
+    });
 }
 
 /*
