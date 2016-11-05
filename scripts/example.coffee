@@ -10,6 +10,13 @@
 
 module.exports = (robot) ->
 
+  robot.hear /hi|hello|hey/i, (res) ->
+    res.reply 'Greetings friend'
+
+  robot.respond /what is your name/i, (res) ->
+    res.reply 'My name is John Snow'
+
+
   # robot.hear /badger/i, (res) ->
   #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
   #
