@@ -1,5 +1,8 @@
 var stripe = require('stripe')('sk_test_ar94SyA9caWaloZxvJ3L2SJ1');
 var Quiche = require('quiche');
+var GoogleUrl = require('google-url');
+
+var googleUrl = new GoogleUrl({ key: 'AIzaSyCt8GC0foQ18Ee3E4ixCL42daLJJnkAnMk' });
 
 var TransactionList = function(transactions) {
   this.transactions = transactions;
@@ -294,8 +297,10 @@ var TransactionList = function(transactions) {
 
           bar.addAxisLabels('x', labels);
 
-          var imageUrl = bar.getUrl(true);
-          message.reply(imageUrl);
+          var imageUrl = bar.getUrl(false);
+          googleUrl.shorten(imageUrl, function( rr, shortUrl) {
+            message.reply(shortUrl);
+          });
       });
 
     });
@@ -358,8 +363,11 @@ var TransactionList = function(transactions) {
 
             bar.addAxisLabels('x', labels);
 
-            var imageUrl = bar.getUrl(true);
-            message.reply(imageUrl);
+            var imageUrl = bar.getUrl(false);
+            googleUrl.shorten(imageUrl, function( rr, shortUrl) {
+              message.reply(shortUrl);
+            });
+
         });
     });
 

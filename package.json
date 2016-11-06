@@ -6,6 +6,7 @@
   "description": "I will make sure a Lennister always pays his debts.",
   "dependencies": {
     "cheerio": "^0.22.0",
+    "google-url": "0.0.4",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-fb": "^5.0.0",
