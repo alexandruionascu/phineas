@@ -21,11 +21,8 @@ function computePriceForProductFromUrl(url, callback) {
     console.log("Status code: " + response.statusCode);
     // Parse the document body
     $ = cheerio.load(body);
-    var strProductInfos = $('html > body > div#a-page > div#main > ' +
-                            'div#searchTemplate > div#rightContainerATF > ' +
-                            'div#rightResultsATF > div#resultsCol > ' +
-                            'div#centerMinus > div#atfResults > ' +
-                            'ul#s-results-list-atf > li#result_0'/* > div.s-item-container > div.a-fixed-left-grid > div.a-fixed-left-grid-inner > div.a-fixed-left-grid-col.a-col-right > div.a-row > div.a-column.a-span7 > div.a-row.a-spacing-none > a.a-link-normal.a-text-normal > span.a-size-base.a-color-price.s-price.a-text-bold*/).text();
+    var strProductInfos = $('li[id="result_0"]').text();
+    
     var price = 0;
     for (var i = 0; i < strProductInfos.length; i++) {
       if (strProductInfos[i] == '$') {
