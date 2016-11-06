@@ -105,6 +105,7 @@ var WishlistContainer = function(wishlist) {
 
             // expand the output with the discount infos, item name, link, image,
             // new price, etc
+            console.log("blabla");
             message.reply("hey, discount");
           }
         });
@@ -119,7 +120,7 @@ var WishlistContainer = function(wishlist) {
     dialog.addChoice(/(.*)/i, function(message2) {
       var itemName = message2.match[1];
       // TODO mesaj just a sec
-      computePriceForProductFromUrl(START_URL + itemName, function(price, imgSrc, url, href) {
+      computePriceForProductFromUrl(START_URL + itemName.replace("phineas", ""), function(price, imgSrc, url, href) {
         message2.reply("We found this product on Amazon with the price of " + price + '$');
         if (typeof imgSrc !== 'undefined') {
           message2.reply(imgSrc);

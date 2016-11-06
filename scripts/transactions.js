@@ -55,18 +55,18 @@ var TransactionList = function(transactions) {
     this.time = Date.now();
 
     this.toString = function() {
-        return this.description + ' ' + this.amount + '  $ at time ' + this.time;
+        return this.amount + '$ ' + this.description/*' at time ' + this.time*/;
     }
   };
 
 
   module.exports = function(robot) {
     //------------------------- SPENDINGS --------------------------
-    robot.respond(/spend (.*) (on|for) (.*)/i, function(message) {
+    robot.respond(/spend (.*) on (.*)/i, function(message) {
         var amount = -1 * parseInt(message.match[1]);
         var spending = new Transaction(amount, message.match[2]);
 
-        message.reply("I just recorder a new spending: " + spending.toString());
+        message.reply("I just recorded a new spending: " + amount + "$ " + "with " + message.match[2]);
 
         var spendingList = robot.brain.get('transactions');
 
@@ -92,7 +92,7 @@ var TransactionList = function(transactions) {
                 message.reply("Oh, you didn't spend anything! Amazing! :+1:")
             } else {
                 for (var i = 0; i < spendingList.length; i++)
-                    message.reply(spendingList[i].toString());
+                    message.reply(spendingList[i].amount + "$ on " + spendingList[i].description);
             }
         }
     });
@@ -102,7 +102,7 @@ var TransactionList = function(transactions) {
         var amount = parseInt(message.match[1]);
         var income = new Transaction(amount, message.match[2]);
 
-        message.reply("I just recorded a new income: " + income.toString());
+        message.reply("I just recorded a new income: " + amount + "$ from " + message.match[2]);
 
         var transactionList = robot.brain.get('transactions');
 
@@ -121,7 +121,7 @@ var TransactionList = function(transactions) {
       var daysAgo = message.match[3];
       var spending = new Transaction(amount, message.match[2]);
 
-      message.reply("I just recorded a new spending: " + spending.toString());
+      message.reply("I just recorded a new spending: " + amount + "$ with " + message.match[2] + " " + message.match[3] + " days ago.");
 
       var spendingList = robot.brain.get('transactions');
 
@@ -143,7 +143,7 @@ var TransactionList = function(transactions) {
       var income = new Transaction(amount, message.match[2]);
       var daysAgo = parseInt(message.match[3]);
 
-      message.reply("I just recorded a new income: " + income.toString());
+      message.reply("I just recorded a new income: " + amount + "$ from " + message.match[2] + " " + message.match[3] + " days ago.");
 
       var transactionList = robot.brain.get('transactions');
 
@@ -171,7 +171,7 @@ var TransactionList = function(transactions) {
                 message.reply("Oh, you didn't received anything! Too bad :sad: ")
             } else {
                 for (var i = 0; i < incomeList.length; i++)
-                    message.reply(incomeList[i].toString());
+                    message.reply(incomeList[i].amount + "$ from " + incomeList[i].description);
             }
         }
     });
@@ -191,7 +191,7 @@ var TransactionList = function(transactions) {
           }
 
           for (var i = 0; i < stripeIncome.length; i++)
-            message.reply(stripeIncome[i].amount / 100 + '$ for ' + stripeIncome[i].description + ' at ' + stripeIncome[i].time);
+            message.reply(stripeIncome[i].amount / 100 + '$ for ' + stripeIncome[i].description/* + ' at ' + stripeIncome[i].time*/);
 
         });
 
@@ -298,7 +298,7 @@ var TransactionList = function(transactions) {
               spendingData[dayIndex] += (-1 * spendings[i].amount);
           }
 
-          message.reply(incomeData.length + " - " + spendingData.length);
+          //message.reply(incomeData.length + " - " + spendingData.length);
           var bar = new Quiche('bar');
           bar.setWidth(400);
           bar.setHeight(265);
