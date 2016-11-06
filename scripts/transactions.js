@@ -1,3 +1,17 @@
+// Description:
+// Commands which are related to transactions
+// Commands:
+//   hubot what is your name - reponds what is your name
+//   hubot spend X on/for Y - spend X dollars on Y object
+//   hubot list spendings - show all your current spendings
+//   hubot add X from Y - add X money to account from Y description
+//   hubot show weekly / monthly chart - show the report of your account transaction's history
+//   hubot what is my balance - shows the current balance for user's account
+//   hubot set X income from Y Z days ago - set X dollars income from Y description Z days ago
+//   hubot list all income - list income from all sources
+//   hubot list stripe income - list income from stripe
+
+
 var stripe = require('stripe')('sk_test_ar94SyA9caWaloZxvJ3L2SJ1');
 var Quiche = require('quiche');
 var GoogleUrl = require('google-url');
@@ -48,7 +62,7 @@ var TransactionList = function(transactions) {
 
   module.exports = function(robot) {
     //------------------------- SPENDINGS --------------------------
-    robot.respond(/spend (.*) on (.*)/i, function(message) {
+    robot.respond(/spend (.*) (on|for) (.*)/i, function(message) {
         var amount = -1 * parseInt(message.match[1]);
         var spending = new Transaction(amount, message.match[2]);
 
@@ -71,11 +85,11 @@ var TransactionList = function(transactions) {
         var spendingList = robot.brain.get('transactions');
 
         if (!spendingList) {
-            message.reply("Oh, you didn't spend anything! Amazing!");
+            message.reply("Oh, you didn't spend anything! Amazing! :+1:");
         } else {
             spendingList = spendingList.getSpendings();
             if (spendingList.length == 0) {
-                message.reply("Oh, you didn't spend anything! Amazing!")
+                message.reply("Oh, you didn't spend anything! Amazing! :+1:")
             } else {
                 for (var i = 0; i < spendingList.length; i++)
                     message.reply(spendingList[i].toString());
@@ -220,18 +234,32 @@ var TransactionList = function(transactions) {
     robot.respond(/what is my balance/i, function(message) {
       getAllIncomes(function(income) {
         var balance = 0;
+        var earnings = 0;
+        var loss = 0;
         for(var i = 0; i < income.length; i++)
-          balance += income[i].amount;
+          balance += income[i].amount, earnings += income[i].amount;
         var spendings = robot.brain.get('transactions');
           if(!spendings)
             spendings = new TransactionList([]);
           spendings = spendings.getSpendings();
           for(var i = 0; i < spendings.length; i++)
-            balance += spendings[i].amount;
+            balance += spendings[i].amount, loss += (-1 * spendings[i].amount);
 
-          message.reply("Your current balance is " + balance + "$");
-      });
+         message.reply("Your current balance is " + balance + "$");
+         var pie = new Quiche('pie');
+         pie.setTransparentBackground(); // Make background transparent
+         pie.addData(earnings, 'Income', '33B2FF');
+         pie.addData(loss, 'Spend', 'FF8D33');
+         pie.setWidth(600);
+         pie.setHeight(365);
+         pie.setLabel(['Income', 'Spent']); // Add labels to pie segments
+         var imageUrl = pie.getUrl(false);
+         googleUrl.shorten(imageUrl, function(rr, shortUrl) {
+           message.reply(shortUrl);
+         });
     });
+
+  });
 
     robot.respond(/show weekly chart/i, function(message) {
       getAllIncomes(function(incomes) {

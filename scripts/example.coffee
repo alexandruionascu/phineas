@@ -3,6 +3,7 @@
 #
 # Commands:
 #   hubot what is your name - reponds what is your name
+#   hubot hi|hello|hey - greetings
 # Notes:
 #   They are commented out by default, because most of them are pretty silly and
 #   wouldn't be useful and amusing enough for day to day huboting.
@@ -18,7 +19,7 @@ module.exports = (robot) ->
     res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
 
   robot.respond /hi|hello|hey/i, (res) ->
-   res.reply 'Greetings friend ' + randomWord()
+   res.reply 'Greetings friend '
 
   robot.respond /what is your name/i , (res) ->
     res.reply 'My name is Phineas'
