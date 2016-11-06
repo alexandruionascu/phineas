@@ -1,4 +1,4 @@
-# John Snow
+# John Snow, now PHINEAS
 
 # Slack launch 
 $ HUBOT_SLACK_TOKEN=xoxb-YOUR-TOKEN-HERE ./bin/hubot --adapter slack
