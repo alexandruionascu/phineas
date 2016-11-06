@@ -221,8 +221,14 @@ var TransactionList = function(transactions) {
         }
 
         for(var i = 0; i < incomes.length; i++) {
-          var dayIndex = Math.floor(Math.abs(((Number(incomes[i].time)) - Number(Date.now()) / 1000)) / (24 * 3600));
-          console.log(dayIndex);
+          var dayIndex;
+          if (incomes[i].description.includes("Stripe")) {
+            dayIndex = Math.floor((Math.abs((Number(incomes[i].time) * 1000) - Number(Date.now())))/(3600 * 24 * 1000));
+          }  else {
+            dayIndex = Math.floor((Math.abs((Number(incomes[i].time)) - Number(Date.now())))/(3600 * 24 * 1000));
+          }
+
+          console.log("index " + dayIndex);
           if(dayIndex < 7)
             incomeData[dayIndex] += incomes[i].amount;
         }
@@ -237,16 +243,16 @@ var TransactionList = function(transactions) {
           spendings = spendings.getSpendings();
 
           for(var i = 0; i < spendings.length; i++) {
-            var dayIndex = Math.floor(Math.abs(((Number(spendings[i].time)) - Number(Date.now()) / 1000)) / (24 * 3600));
-              if(dayIndex < 7)
-                spendingData[dayIndex] += (-1 * spendings[i].amount);
+            var dayIndex = Math.floor((Math.abs((Number(incomes[i].time)) - Number(Date.now())))/(3600 * 24 * 1000));
+            if(dayIndex < 7)
+              spendingData[dayIndex] += (-1 * spendings[i].amount);
           }
 
           message.reply(incomeData.length + " - " + spendingData.length);
           var bar = new Quiche('bar');
           bar.setWidth(400);
           bar.setHeight(265);
-          bar.setTitle('Your balance history');
+          bar.setTitle('Transactions from the past 7 days');
           bar.setBarStacked(); // Stacked chart
           bar.setBarWidth(0);
           bar.setBarSpacing(6); // 6 pixles between bars/groups
@@ -256,7 +262,18 @@ var TransactionList = function(transactions) {
           bar.addData(spendingData, 'Spending', '0000FF');
 
           bar.setAutoScaling(); // Auto scale y axis
-          bar.addAxisLabels('x', ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+          var weekLabels = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+          var today = new Date().getDay();
+          var labels = [];
+          for(var i = 0; i < 7; i++) {
+            labels.push(weekLabels[today]);
+            today++;
+            today %= 7;
+          }
+
+          console.log(JSON.stringify(labels));
+
+          bar.addAxisLabels('x', labels);
 
           var imageUrl = bar.getUrl(true);
           message.reply(imageUrl);
