@@ -39,7 +39,6 @@ function computePriceForProductFromUrl(url, callback) {
         break;
       }
     }
-    console.log(price);
     callback(price);
   });
 };
@@ -49,8 +48,7 @@ module.exports = function(robot) {
   robot.respond(/price for (.*)/i, function(message) {
     computePriceForProductFromUrl(START_URL + message.match[1],
       function(price) {
-        console.log(price + " mere");
-        message.reply(price.toString());
+        message.reply(price.toString() + "$");
     });
   });
 };
