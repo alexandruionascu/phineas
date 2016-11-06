@@ -11,5 +11,6 @@
   "hubot-shipit",
   "hubot-help",
   "hubot-remind-her",
-  "hubot-suggest"
+  "hubot-suggest",
+  "hubot-mysql-brain"
 ]

@@ -101,6 +101,28 @@ var TransactionList = function(transactions) {
         robot.brain.set('transactions', transactionList);
     });
 
+    robot.respond(/set (.*) income from (.*) (.*) days ago/i, function(message) {
+      var amount = parseInt(message.match[1]);
+      var income = new Transaction(amount, message.match[2]);
+      var daysAgo = parseInt(message.match[3]);
+
+      message.reply("I just recorded a new income: " + income.toString());
+
+      var transactionList = robot.brain.get('transactions');
+
+      if (transactionList == null) {
+          var array = [];
+          array.push(income);
+          transactionList = new TransactionList(array);
+      } else {
+          transactionList.addTransaction(amount, message.match[2]);
+      }
+      var date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+      transactionList.transactions[transactionList.transactions.length - 1].time = date.getTime();
+      robot.brain.set('transactions', transactionList);
+    });
+
     robot.respond(/list incomes/i, function(message) {
         var incomeList = robot.brain.get('transactions');
 
@@ -191,17 +213,35 @@ var TransactionList = function(transactions) {
     robot.respond(/show weekly chart/i, function(message) {
       getAllIncomes(function(incomes) {
         var incomeData = [];
-        for(var i = 0; i < incomes.length; i++)
-          incomeData.push(incomes[i].amount);
-
         var spendingData = [];
+
+        for(var i = 0; i < 7; i++) {
+          incomeData[i] = 0;
+          spendingData[i] = 0;
+        }
+
+        for(var i = 0; i < incomes.length; i++) {
+          var dayIndex = Math.floor(Math.abs(((Number(incomes[i].time)) - Number(Date.now()) / 1000)) / (24 * 3600));
+          console.log(dayIndex);
+          if(dayIndex < 7)
+            incomeData[dayIndex] += incomes[i].amount;
+        }
+
+        console.log(JSON.stringify(incomeData));
+
+
+
         var spendings = robot.brain.get('transactions');
           if(!spendings)
             spendings = new TransactionList([]);
           spendings = spendings.getSpendings();
 
-          for(var i = 0; i < spendings.length; i++)
-            spendingData.push(-1 * spendings[i].amount);
+          for(var i = 0; i < spendings.length; i++) {
+            var dayIndex = Math.floor(Math.abs(((Number(spendings[i].time)) - Number(Date.now()) / 1000)) / (24 * 3600));
+              if(dayIndex < 7)
+                spendingData[dayIndex] += (-1 * spendings[i].amount);
+          }
+
           message.reply(incomeData.length + " - " + spendingData.length);
           var bar = new Quiche('bar');
           bar.setWidth(400);
