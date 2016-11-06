@@ -62,8 +62,6 @@ var TransactionList = function(transactions) {
         }
 
         robot.brain.set('transactions', spendingList);
-        message.reply(message.match[1]);
-        message.reply(message.match[2]);
     });
 
     robot.respond(/list spendings/i, function(message) {
@@ -99,6 +97,28 @@ var TransactionList = function(transactions) {
             transactionList.addTransaction(amount, message.match[2]);
         }
         robot.brain.set('transactions', transactionList);
+    });
+
+    robot.respond(/set (.*) spending for (.*) (.*) days ago/i, function(message) {
+      var amount = -1 * parseInt(message.match[1]);
+      var daysAgo = message.match[3];
+      var spending = new Transaction(amount, message.match[2]);
+
+      message.reply("I just recorded a new spending: " + spending.toString());
+
+      var spendingList = robot.brain.get('transactions');
+
+      if (spendingList == null) {
+          var array = [];
+          array.push(spending);
+          spendingList = new TransactionList(array);
+      } else {
+          spendingList.addTransaction(amount, message.match[2]);
+      }
+      var date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+      spendingList.transactions[spendingList.transactions.length - 1].time = date.getTime();
+      robot.brain.set('transactions', spendingList);
     });
 
     robot.respond(/set (.*) income from (.*) (.*) days ago/i, function(message) {
@@ -233,8 +253,6 @@ var TransactionList = function(transactions) {
             incomeData[dayIndex] += incomes[i].amount;
         }
 
-        console.log(JSON.stringify(incomeData));
-
 
 
         var spendings = robot.brain.get('transactions');
@@ -243,7 +261,8 @@ var TransactionList = function(transactions) {
           spendings = spendings.getSpendings();
 
           for(var i = 0; i < spendings.length; i++) {
-            var dayIndex = Math.floor((Math.abs((Number(incomes[i].time)) - Number(Date.now())))/(3600 * 24 * 1000));
+            var dayIndex = Math.floor((Math.abs((Number(spendings[i].time)) - Number(Date.now())))/(3600 * 24 * 1000));
+            console.log("Spending day index " + dayIndex);
             if(dayIndex < 7)
               spendingData[dayIndex] += (-1 * spendings[i].amount);
           }
@@ -278,6 +297,70 @@ var TransactionList = function(transactions) {
           var imageUrl = bar.getUrl(true);
           message.reply(imageUrl);
       });
+
+    });
+
+      robot.respond(/show monthly chart/i, function(message) {
+        getAllIncomes(function(incomes) {
+          var incomeData = [];
+          var spendingData = [];
+
+          for(var i = 0; i < 30; i++) {
+            incomeData[i] = 0;
+            spendingData[i] = 0;
+          }
+
+          for(var i = 0; i < incomes.length; i++) {
+            var dayIndex;
+            if (incomes[i].description.includes("Stripe")) {
+              dayIndex = Math.floor((Math.abs((Number(incomes[i].time) * 1000) - Number(Date.now())))/(3600 * 24 * 1000));
+            }  else {
+              dayIndex = Math.floor((Math.abs((Number(incomes[i].time)) - Number(Date.now())))/(3600 * 24 * 1000));
+            }
+
+            console.log("index " + dayIndex);
+            if(dayIndex < 30)
+              incomeData[dayIndex] += incomes[i].amount;
+          }
+
+          var spendings = robot.brain.get('transactions');
+            if(!spendings)
+              spendings = new TransactionList([]);
+            spendings = spendings.getSpendings();
+
+            for(var i = 0; i < spendings.length; i++) {
+              var dayIndex = Math.floor((Math.abs((Number(spendings[i].time)) - Number(Date.now())))/(3600 * 24 * 1000));
+              console.log("Spending day index " + dayIndex);
+              if(dayIndex < 30)
+                spendingData[dayIndex] += (-1 * spendings[i].amount);
+            }
+
+            var bar = new Quiche('bar');
+            bar.setWidth(800);
+            bar.setHeight(265);
+            bar.setTitle('Transactions from the past 30 days');
+            bar.setBarStacked(); // Stacked chart
+            bar.setBarWidth(0);
+            bar.setBarSpacing(6); // 6 pixles between bars/groups
+            bar.setLegendBottom(); // Put legend at bottom
+            bar.setTransparentBackground(); // Make background transparent
+            bar.addData(incomeData, 'Income', '33B2FF');
+            bar.addData(spendingData, 'Spent', 'FF8D33');
+
+            bar.setAutoScaling(); // Auto scale y axis
+            var today = new Date().getDate();
+            var labels = [];
+            for(var i = 0; i < 30; i++) {
+              labels.push(today.toString());
+              today++;
+              today %= 30;
+            }
+
+            bar.addAxisLabels('x', labels);
+
+            var imageUrl = bar.getUrl(true);
+            message.reply(imageUrl);
+        });
     });
 
 
