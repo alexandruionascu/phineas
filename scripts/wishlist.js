@@ -100,8 +100,8 @@ var WishlistContainer = function(wishlist) {
         }
         completeUrl = START_URL + wishlist.getElementAtIndex(i).name;
         computePriceForProductFromUrl(completeUrl, function(price, imgSrcUrl, productHref) {
-          console.log(price + ' gasit' + wishlist.count() + " " + wishlist.wishlistContainer[i].name);
-          if (parseInt(wishlist.wishlistContainer[i].desiredPrice) >= parseInt(price)) {
+          console.log(price + ' gasit ' + i + " - " + wishlist.wishlistContainer[0].desiredPrice);
+          if (parseInt(wishlist.wishlistContainer[0].desiredPrice) >= parseInt(price)) {
 
             // expand the output with the discount infos, item name, link, image,
             // new price, etc
