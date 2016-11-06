@@ -258,8 +258,8 @@ var TransactionList = function(transactions) {
           bar.setBarSpacing(6); // 6 pixles between bars/groups
           bar.setLegendBottom(); // Put legend at bottom
           bar.setTransparentBackground(); // Make background transparent
-          bar.addData(incomeData, 'Income', 'FF0000');
-          bar.addData(spendingData, 'Spending', '0000FF');
+          bar.addData(incomeData, 'Income', '33B2FF');
+          bar.addData(spendingData, 'Spent', 'FF8D33');
 
           bar.setAutoScaling(); // Auto scale y axis
           var weekLabels = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
