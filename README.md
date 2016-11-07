@@ -1,9 +1,9 @@
 # John Snow, now PHINEAS
 
-# Slack launch 
-$ HUBOT_SLACK_TOKEN=xoxb-YOUR-TOKEN-HERE ./bin/hubot --adapter slack
+### Slack launch 
 
-    $ HUBOT_SLACK_TOKEN=xoxb-100128207137-am84KiT3sLKjrmWmEnat6uwm ./bin/hubot --adapter slack
+    $ HUBOT_SLACK_TOKEN=xoxb-YOUR-TOKEN-HERE ./bin/hubot --adapter slack
+
 
     
 John Snow is a chat bot built on the [Hubot][hubot] framework. It was
