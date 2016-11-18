@@ -8,7 +8,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 module.exports = function (robot) {
 
-	robot.hear(/manea/i, function (res) {
+	robot.hear(/(manea)|(rockareala)/i, function (res) {
 		_fs2.default.readFile('src/music.json', 'utf8', function (err, data) {
 			if (err) throw err;
 			var musicList = JSON.parse(data);
