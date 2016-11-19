@@ -2,3 +2,5 @@ DS.Store
 
 # npm packages 
 node_modules/*
+
+.hubot_history
