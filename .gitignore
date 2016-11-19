@@ -4,3 +4,6 @@ DS.Store
 node_modules/
 
 .hubot_history
+
+# babel output JS 
+scripts/*
