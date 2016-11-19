@@ -31,6 +31,7 @@ module.exports = (robot) => {
     luisAdapter.query(res.match[1], (data) => {
       const jsonData = JSON.parse(data);
 
+      // populate args
       const args = [];
       for (let i = 0; i < jsonData.entities.length; i += 1) {
         args[i] = jsonData.entities[i].entity;
@@ -45,6 +46,7 @@ module.exports = (robot) => {
           res.send(args);
           break;
         default:
+          res.send('unknown command');
           break;
       }
     });
