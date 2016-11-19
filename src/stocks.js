@@ -23,7 +23,7 @@ module.exports = (robot) => {
     console.log(JSON.stringify(message).text);
     return Math.random() > 0.5;
   }, (response) => {
-    response.reply('OMG THEY CALLED ME');
+    //response.reply('OMG THEY CALLED ME');
   });
 
   robot.listen((message) => {

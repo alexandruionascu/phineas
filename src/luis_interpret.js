@@ -37,7 +37,7 @@ module.exports = (robot) => {
         args[i] = jsonData.entities[i].entity;
       }
 
-      res.send(jsonData.topScoringIntent.intent);
+      /*res.send(jsonData.topScoringIntent.intent);
       switch (jsonData.topScoringIntent.intent) {
         case 'Convert':
           res.send(args);
@@ -49,6 +49,7 @@ module.exports = (robot) => {
           res.send('unknown command');
           break;
       }
+      */
     });
   });
 };
