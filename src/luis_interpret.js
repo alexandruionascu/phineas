@@ -1,6 +1,6 @@
 import Request from 'request';
 
-const APP_ID = '54e9b18d-25a2-4800-be59-00255000fc7a';
+const APP_ID = '5ba9f575-5e9a-44dc-a1b1-cb7747f6071a';
 const APP_SECRET = 'f1c110e261b746f8bb2c719f059c4327';
 const BASE_URL = 'https://api.projectoxford.ai/luis/v2.0/apps/';
 
@@ -30,19 +30,22 @@ module.exports = (robot) => {
     const luisAdapter = new LuisAdapter(APP_ID, APP_SECRET);
     luisAdapter.query(res.match[1], (data) => {
       const jsonData = JSON.parse(data);
-      //  debug
-      res.send(jsonData.topScoringIntent.intent);
+
+      const args = [];
       for (let i = 0; i < jsonData.entities.length; i += 1) {
-        res.send(jsonData.entities[i].entity);
+        args[i] = jsonData.entities[i].entity;
       }
 
+      res.send(jsonData.topScoringIntent.intent);
       switch (jsonData.topScoringIntent.intent) {
         case 'Convert':
+          res.send(args);
           break;
         case 'GetStock':
+          res.send(args);
           break;
         default:
-
+          break;
       }
     });
   });
