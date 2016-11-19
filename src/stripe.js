@@ -1,5 +1,4 @@
 var stripe = require('stripe')('sk_test_ar94SyA9caWaloZxvJ3L2SJ1');
-//var transactions = require("./transactions.js")
 
 
 function TransactionWithTime(amount, description, created) {
