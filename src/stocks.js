@@ -44,6 +44,8 @@ class StockManager {
   }
 }
 
+module.exports = StockManager;
+
 module.exports = (robot) => {
   robot.respond(/stock for (.*)/i, (res) => {
     const stockManager = new StockManager();
