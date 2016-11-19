@@ -5,7 +5,7 @@ import Natural from 'natural';
 const COMPANIES_FILE = 'src/companies.json';
 const TEXT_ENCODING = 'utf8';
 
-class StockManager {
+module.exports = class StockManager {
   constructor() {
     const data = FileSystem.readFileSync(COMPANIES_FILE, TEXT_ENCODING);
     this._companies = JSON.parse(data);
@@ -43,8 +43,6 @@ class StockManager {
     });
   }
 }
-
-module.exports = StockManager;
 
 module.exports = (robot) => {
   robot.respond(/stock for (.*)/i, (res) => {
