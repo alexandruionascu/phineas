@@ -1,6 +1,9 @@
 DS.Store
 
 # npm packages 
-node_modules/*
+node_modules/
 
 .hubot_history
+
+# babel output JS 
+scripts/*
