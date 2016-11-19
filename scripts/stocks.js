@@ -26,14 +26,14 @@ module.exports = function (robot) {
   });
 
   robot.listen(function (message) {
-    console.log(JSON.stringify(message));
+    console.log(JSON.stringify(message).text);
     return Math.random() > 0.5;
   }, function (response) {
     response.reply('OMG THEY CALLED ME');
   });
 
   robot.listen(function (message) {
-    console.log(JSON.stringify(message));
+    console.log(JSON.stringify(message.text));
     return Math.random() < 0.2;
   }, function (response) {
     response.reply('OMG THEY CALLED ME IM SO RAREEE');
