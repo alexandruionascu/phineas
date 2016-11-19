@@ -32,18 +32,23 @@ class StockManager {
   set companies(values) {
     this._companies = values;
   }
+
+  getStockPrice(companyName, callback) {
+    const company = this.getCompany(companyName);
+    YahooFinance.getQuotes(company.Symbol, (err, data) => {
+      if (err) {
+        throw err;
+      }
+      callback(data);
+    });
+  }
 }
 
 module.exports = (robot) => {
   robot.respond(/stock for (.*)/i, (res) => {
     const stockManager = new StockManager();
-    console.log(stockManager.getCompany(res.match[1]));
-
-    YahooFinance.getQuotes(res.match[1], (err, data) => {
-      if (err) {
-        throw err;
-      }
-      console.log(data);
+    stockManager.getStockPrice(res.match[1], (price) => {
+      res.send(price[0].Bid);
     });
   });
 
