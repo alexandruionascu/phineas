@@ -43,21 +43,3 @@ export class StockManager {
     });
   }
 }
-
-module.exports = (robot) => {
-  robot.respond(/stockkkkk for (.*)/i, (res) => {
-    const stockManager = new StockManager();
-    stockManager.getStockPrice(res.match[1], (price) => {
-      res.send(price[0].Bid);
-    });
-  });
-
-  robot.respond(/history for (.*)/i, (res) => {
-    YahooFinance.getHistorical(res.match[1], '2016-01-01', '2016-08-05', (err, data) => {
-      if (err) {
-        throw err;
-      }
-      console.log(data);
-    });
-  });
-};
