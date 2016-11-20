@@ -29,10 +29,10 @@ module.exports = function(robot) {
   });
 
   /**
-   * Returns dateStr in unix timestamp format.
+   * Returns dateStr in Unix timestamp format.
    * @param {string} Any date format.
    *                 For example, 11.08.2012 and 11-08-2012 are both valid.
-   * @return {int}   unix timestamp format, representing number of
+   * @return {int}   Unix timestamp format, representing number of
    *                 seconds since Jan 01 1970.
    */
   function getUnixTimeStampFromDate(dateStr) {
