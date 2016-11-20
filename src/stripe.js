@@ -28,11 +28,36 @@ module.exports = function(robot) {
     });
   });
 
+  /**
+   * Returns dateStr in Unix timestamp format.
+   * @param {string} Any date format.
+   *                 For example, 11.08.2012 and 11-08-2012 are both valid.
+   * @return {int}   Unix timestamp format, representing number of
+   *                 seconds since Jan 01 1970.
+   */
+  function getUnixTimeStampFromDate(dateStr) {
+    return (new Date(dateStr).getTime() / 1000);
+  }
+
   robot.hear(/show income between (.*) and (.*)/i, function(message) {
     var xDate = message.match[1];
-    var yData = message.match[2];
+    var yDate = message.match[2];
+    var xUnixTimeStamp = getUnixTimeStampFromDate(xDate);
+    var yUnixTimeStamp = getUnixTimeStampFromDate(yDate);
+
+    console.log(xUnixTimeStamp + " " + yUnixTimeStamp);
+
     stripe.balance.listTransactions(function(err, transactions) {
-      message.reply("test");
+      for (var i = 0; i < transactions.data.length; i++) {
+        if (transactions.data[i].created >= xUnixTimeStamp &&
+            transactions.data[i].created <= yUnixTimeStamp) {
+          /**
+           * TODO
+           *      send transactions.data[i].created to the graphics class
+           */
+          //console.log(transactions.data[i].created);
+        }
+      }
     });
   });
 
