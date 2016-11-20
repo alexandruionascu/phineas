@@ -1,5 +1,6 @@
 import Request from 'sync-request';
 import StockManager from './stocks';
+import FormattedMessage from './formatted_message';
 const APP_ID = '5ba9f575-5e9a-44dc-a1b1-cb7747f6071a';
 const APP_SECRET = 'f1c110e261b746f8bb2c719f059c4327';
 const BASE_URL = 'https://api.projectoxford.ai/luis/v2.0/apps/';
@@ -41,10 +42,11 @@ module.exports = (robot) => {
         break;
       case 'GetStock':
         const stockManager = new StockManager();
-          res.send(stockManager.getChart(luisResponse.entities[0].entity));
+          res.send(`<${stockManager.getChart(luisResponse.entities[0].entity)}|Chart>`);
         stockManager.getStockPrice(luisResponse.entities[0].entity, (price) => {
           res.send(`The stock price is ${price[0].Bid}$`);
         });
+        res.send(new FormattedMessage().getMessage());
         break;
     }
   });
