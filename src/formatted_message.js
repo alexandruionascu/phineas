@@ -1,6 +1,6 @@
 export default class FormattedMessage {
   getMessage() {
-    return JSON.stringify({
+    return ({
         "text": "New comic book alert!",
         "attachments": [
             {

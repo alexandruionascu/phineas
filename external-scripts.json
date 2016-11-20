@@ -11,5 +11,5 @@
   "hubot-shipit",
   "hubot-help",
   "hubot-remind-her",
-  "hubot-suggest"
+  "hubot-slack-attachment"
 ]

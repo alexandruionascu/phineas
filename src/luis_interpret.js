@@ -41,12 +41,16 @@ module.exports = (robot) => {
       case 'Convert':
         break;
       case 'GetStock':
-        const stockManager = new StockManager();
-          res.send(`<${stockManager.getChart(luisResponse.entities[0].entity)}|Chart>`);
-        stockManager.getStockPrice(luisResponse.entities[0].entity, (price) => {
-          res.send(`The stock price is ${price[0].Bid}$`);
-        });
-        res.send(new FormattedMessage().getMessage());
+      if(!luisResponse.entities)
+        break;
+        const companyName = luisResponse.entities[0].entity;
+        if (companyName) {
+          const stockManager = new StockManager();
+          res.send(`<${stockManager.getChart(companyName)}|${companyName}>`);
+          stockManager.getStockPrice(companyName, (price) => {
+            res.send(`The stock price is ${price[0].Bid}$`);
+          });
+        }
         break;
     }
   });

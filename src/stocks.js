@@ -45,6 +45,6 @@ export default class StockManager {
 
   getChart(companyName) {
     const company = this.getCompany(companyName);
-    return `http://chart.finance.yahoo.com/t?lang=en-US&region=US&width=300&height=180&s=${company.Symbol}`;
+    return `http://chart.finance.yahoo.com/t?lang=en-US&region=US&t=6m&width=300&height=180&s=${company.Symbol}`;
   }
 }

@@ -28,6 +28,7 @@
     "hubot-scripts": "^2.17.2",
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^4.2.1",
+    "hubot-slack-attachment": "^1.0.1",
     "hubot-stocks": "0.0.3",
     "hubot-suggest": "0.0.1",
     "natural": "^0.4.0",
