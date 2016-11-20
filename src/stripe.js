@@ -8,12 +8,25 @@ function TransactionWithTime(amount, description, created) {
 }
 
 
-module.exports = function(robot) {
+var incomesSameType = [];
+var incomesBetweenDates = [];
 
+
+module.exports = function(robot) {
+  /**
+   * Show incomes of a specific type.
+   * Example of type - charge, refund, adjustment, application_fee,
+   *                   application_fee_refund, transfer,
+   *                   or transfer_failure.
+   */
   robot.hear(/show income from (.*)/i, function(message) {
-    var customerName = message.match[1];
+    var itemType = message.match[1];
     stripe.balance.listTransactions(function(err, transactions) {
-      message.reply("test");
+      for (var i = 0; i < transactions.data.length; i++) {
+        if (transactions.data[i].type == itemType) {
+          incomesSameType.push(transactions.data[i]);
+        }
+      }
     });
   });
 
@@ -21,7 +34,7 @@ module.exports = function(robot) {
    * TODO
    *      change hubot message
    */
-  robot.hear(/show income from (.*)/i, function(message) {
+  robot.hear(/show income from bla (.*)/i, function(message) {
     var locationName = message.match[1];
     stripe.balance.listTransactions(function(err, transactions) {
       message.reply("test");
@@ -55,7 +68,7 @@ module.exports = function(robot) {
            * TODO
            *      send transactions.data[i].created to the graphics class
            */
-          //console.log(transactions.data[i].created);
+           incomesBetweenDates.push(transactions.data[i]);
         }
       }
     });
