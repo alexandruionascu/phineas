@@ -96,7 +96,9 @@ module.exports = function(robot) {
             transactions.data[i].created <= yUnixTimeStamp) {
           /**
            * TODO
-           *      send transactions.data[i].created to the graphics class
+           *      send transactions.data[i].created to the graphics class,
+           *      that will be used in every task about graphics - pie chart,
+           *      bar chart, etc.
            */
            incomesBetweenDates.push(transactions.data[i]);
         }
@@ -124,7 +126,7 @@ module.exports = function(robot) {
           itemType = key;
         }
       }
-      message.reply("Actions of " + itemType + " appeared for " + maxValue + " times.");  
+      message.reply("Actions of " + itemType + " appeared for " + maxValue + " times.");
     });
   });
 
