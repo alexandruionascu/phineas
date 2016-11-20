@@ -48,7 +48,9 @@ module.exports = (robot) => {
           const stockManager = new StockManager();
           res.send(`<${stockManager.getChart(companyName)}|${companyName}>`);
           stockManager.getStockPrice(companyName, (price) => {
-            res.send(`The stock price is ${price[0].Bid}$`);
+            res.send(`The stock price for ${price[0].Symbol} is ${price[0].Bid}$`);
+            res.send(`The stock volume for ${price[0].Symbol} is ${price[0].Volume}`);
+            res.send(`The stock for ${price[0].Symbol} is ${price[0].ChangeinPercent} changed in percent`);
           });
         }
         break;
