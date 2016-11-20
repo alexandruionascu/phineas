@@ -37,7 +37,7 @@ module.exports = function(robot) {
   robot.hear(/show income from bla (.*)/i, function(message) {
     var locationName = message.match[1];
     stripe.balance.listTransactions(function(err, transactions) {
-      message.reply("test");
+      //message.reply("test");
     });
   });
 
