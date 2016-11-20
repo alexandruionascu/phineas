@@ -41,8 +41,9 @@ module.exports = (robot) => {
         break;
       case 'GetStock':
         const stockManager = new StockManager();
+          res.send(stockManager.getChart(luisResponse.entities[0].entity));
         stockManager.getStockPrice(luisResponse.entities[0].entity, (price) => {
-          res.send(price[0].Bid);
+          res.send(`The stock price is ${price[0].Bid}$`);
         });
         break;
     }
