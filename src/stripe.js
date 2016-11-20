@@ -105,7 +105,7 @@ module.exports = function(robot) {
     });
   });
 
-  robot.hear(/best selling product/i, function(message) {
+  robot.hear(/most active action/i, function(message) {
     var products = {};
     var maxValue = 0;
     var itemType = "";
@@ -124,7 +124,7 @@ module.exports = function(robot) {
           itemType = key;
         }
       }
-      message.reply("type " + itemType + " " + maxValue);
+      message.reply("Actions of " + itemType + " appeared for " + maxValue + " times.");  
     });
   });
 
