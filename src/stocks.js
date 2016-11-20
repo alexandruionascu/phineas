@@ -5,7 +5,7 @@ import Natural from 'natural';
 const COMPANIES_FILE = 'src/companies.json';
 const TEXT_ENCODING = 'utf8';
 
-module.exports = class StockManager {
+export default class StockManager {
   constructor() {
     const data = FileSystem.readFileSync(COMPANIES_FILE, TEXT_ENCODING);
     this._companies = JSON.parse(data);
@@ -42,22 +42,9 @@ module.exports = class StockManager {
       callback(data);
     });
   }
+
+  getChart(companyName) {
+    const company = this.getCompany(companyName);
+    return `http://chart.finance.yahoo.com/t?lang=en-US&region=US&width=300&height=180&s=${company.Symbol}`;
+  }
 }
-
-module.exports = (robot) => {
-  robot.respond(/stock for (.*)/i, (res) => {
-    const stockManager = new StockManager();
-    stockManager.getStockPrice(res.match[1], (price) => {
-      res.send(price[0].Bid);
-    });
-  });
-
-  robot.respond(/history for (.*)/i, (res) => {
-    YahooFinance.getHistorical(res.match[1], '2016-01-01', '2016-08-05', (err, data) => {
-      if (err) {
-        throw err;
-      }
-      console.log(data);
-    });
-  });
-};

@@ -1,5 +1,6 @@
-import Request from 'request';
-
+import Request from 'sync-request';
+import StockManager from './stocks';
+import FormattedMessage from './formatted_message';
 const APP_ID = '5ba9f575-5e9a-44dc-a1b1-cb7747f6071a';
 const APP_SECRET = 'f1c110e261b746f8bb2c719f059c4327';
 const BASE_URL = 'https://api.projectoxford.ai/luis/v2.0/apps/';
@@ -10,46 +11,43 @@ class LuisAdapter {
     this.appSecret = appSecret;
   }
 
-  query(queryString, callback) {
+  query(queryString) {
     let queryUrl = `${BASE_URL}${this.appId}`;
     queryUrl += `?subscription-key=${this.appSecret}&q=${queryString}`;
 
-    Request(queryUrl, (err, res, body) => {
-      if (err) {
-        throw err;
-      }
-      if (res.statusCode === 200) {
-        callback(body);
-      }
-    });
+    const data = Request('GET', queryUrl);
+    return (JSON.parse(data.getBody('utf8')));
   }
 }
 
 module.exports = (robot) => {
-  robot.hear(/(.*)/i, (res) => {
+
+  let luisResponse = null;
+  robot.listen((message) => {
     const luisAdapter = new LuisAdapter(APP_ID, APP_SECRET);
-    luisAdapter.query(res.match[1], (data) => {
-      const jsonData = JSON.parse(data);
-
-      // populate args
-      const args = [];
-      for (let i = 0; i < jsonData.entities.length; i += 1) {
-        args[i] = jsonData.entities[i].entity;
-      }
-
-      /*res.send(jsonData.topScoringIntent.intent);
-      switch (jsonData.topScoringIntent.intent) {
-        case 'Convert':
-          res.send(args);
-          break;
-        case 'GetStock':
-          res.send(args);
-          break;
-        default:
-          res.send('unknown command');
-          break;
-      }
-      */
-    });
+    const jsonData = luisAdapter.query(message);
+    switch (jsonData.topScoringIntent.intent) {
+      case 'Convert':
+        luisResponse = jsonData;
+        return true;
+      case 'GetStock':
+        luisResponse = jsonData;
+        return true;
+      default:
+        return false;
+    }
+  }, (res) => {
+    switch (luisResponse.topScoringIntent.intent) {
+      case 'Convert':
+        break;
+      case 'GetStock':
+        const stockManager = new StockManager();
+          res.send(`<${stockManager.getChart(luisResponse.entities[0].entity)}|Chart>`);
+        stockManager.getStockPrice(luisResponse.entities[0].entity, (price) => {
+          res.send(`The stock price is ${price[0].Bid}$`);
+        });
+        res.send(new FormattedMessage().getMessage());
+        break;
+    }
   });
 };
