@@ -2,13 +2,11 @@ var stripe = require('stripe')('sk_test_ar94SyA9caWaloZxvJ3L2SJ1');
 var Quiche = require('quiche');
 var GoogleUrl = require('google-url');
 var moment = require('moment');
-//var DateTimeHelper = require('./datetime.js');
 
 import { DateTimeHelper } from './datetime';
 
 var googleUrl = new GoogleUrl({ key: 'AIzaSyCt8GC0foQ18Ee3E4ixCL42daLJJnkAnMk' });
 
-//var dateTimeHelper = new DateTimeHelper();
 
 function TransactionWithTime(amount, description, created) {
   this.amount = amount;
@@ -53,6 +51,7 @@ var incomesBetweenDates = [];
 
 
 module.exports = function(robot) {
+
   /**
    * Show incomes of a specific type.
    * Example of type - charge, refund, adjustment, application_fee,
@@ -69,6 +68,7 @@ module.exports = function(robot) {
       }
     });
   });
+
 
   /**
    * TODO
@@ -94,6 +94,7 @@ module.exports = function(robot) {
       for (var i = 0; i < transactions.data.length; i++) {
         if (transactions.data[i].created >= xUnixTimeStamp &&
             transactions.data[i].created <= yUnixTimeStamp) {
+
           /**
            * TODO
            *      send transactions.data[i].created to the graphics class,
@@ -106,6 +107,7 @@ module.exports = function(robot) {
       console.log(DateTimeHelper.getDateFromUnixTimeStamp(1466760008));
     });
   });
+
 
   robot.hear(/most active action/i, function(message) {
     var products = {};
@@ -130,6 +132,7 @@ module.exports = function(robot) {
     });
   });
 
+
   robot.hear(/show history/i, function(message) {
     message.reply("Your transactions are loading...")
     stripe.balance.listTransactions(function(err, transactions) {
@@ -150,6 +153,7 @@ module.exports = function(robot) {
       //message.reply(JSON.stringify(transactions));
     });
   });
+
 
   robot.respond(/what is my account id/i, function(message) {
     stripe.accounts.retrieve(
