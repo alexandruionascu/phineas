@@ -8,7 +8,7 @@
 
     $ HUBOT_SLACK_TOKEN=xoxb-YOUR-TOKEN-HERE ./bin/hubot --adapter slack
 
-Your Slack API token is on the `Edit configuration` from <a href="https://fintech-hackaton.slack.com/apps/A0F7YS25R-bots"> here </a>.
+Your Slack API token is on the `Edit configuration` from <a href="https://fintech-hackaton.slack.com/apps/A0F7YS25R-bots"> here</a>.
 
 
 
