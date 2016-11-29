@@ -8,6 +8,8 @@
 
     $ HUBOT_SLACK_TOKEN=xoxb-YOUR-TOKEN-HERE ./bin/hubot --adapter slack
 
+Your token is on the `Edit configuration` from <a href="https://fintech-hackaton.slack.com/apps/A0F7YS25R-bots"> here </a>.
+
 
 
 Phineas is a chat bot built on the [Hubot][hubot] framework. It was
