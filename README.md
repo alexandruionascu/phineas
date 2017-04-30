@@ -1,4 +1,4 @@
-#PHINEAS
+# PHINEAS
 
 
 ### Installing dependencies
@@ -45,3 +45,4 @@ Then you can interact with Phineas by typing `Phineas help`.
     Phineas animate me <query> - The same thing as `image me`, except adds [snip]
     Phineas help - Displays all of the help commands that Phineas knows about.
     ...
+
