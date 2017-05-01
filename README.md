@@ -1,5 +1,6 @@
 # PHINEAS
 
+[![Build Status](https://travis-ci.org/marius92mc/phineas.svg?branch=master)](https://travis-ci.org/marius92mc/phineas)
 
 ### Installing dependencies
     $ npm install
